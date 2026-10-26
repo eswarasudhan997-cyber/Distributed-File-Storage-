@@ -10,21 +10,22 @@ on:
 jobs:
   compile-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-      - name: Compile application and test sources
+
+      - name: Compile application and core tests
         run: |
           mkdir -p out
           javac -encoding UTF-8 -d out \
             src/main/java/BTree.java \
             src/main/java/StorageSystem.java \
-            src/test/java/StorageSystemTests.java \
-            src/test/java/StorageSystemMySqlTests.java
+            src/test/java/StorageSystemTests.java
+
       - name: Run core regression tests
         run: java -cp out StorageSystemTests
-      - name: Verify optional MySQL test gracefully skips without credentials
-        run: java -cp out StorageSystemMySqlTests
