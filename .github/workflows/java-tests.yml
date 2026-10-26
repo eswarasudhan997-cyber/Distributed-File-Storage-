@@ -1,9 +1,12 @@
 name: Java checks
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
 jobs:
   compile-and-test:
     runs-on: ubuntu-latest
@@ -13,7 +16,15 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Compile application and core tests
-        run: mkdir -p out && javac -encoding UTF-8 -d out src/main/java/BTree.java src/main/java/StorageSystem.java src/test/java/StorageSystemTests.java
-      - name: Run core tests
+      - name: Compile application and test sources
+        run: |
+          mkdir -p out
+          javac -encoding UTF-8 -d out \
+            src/main/java/BTree.java \
+            src/main/java/StorageSystem.java \
+            src/test/java/StorageSystemTests.java \
+            src/test/java/StorageSystemMySqlTests.java
+      - name: Run core regression tests
         run: java -cp out StorageSystemTests
+      - name: Verify optional MySQL test gracefully skips without credentials
+        run: java -cp out StorageSystemMySqlTests

@@ -1,0 +1,23 @@
+# Java build output
+out/
+build/
+work/
+*.class
+
+# Local persistent application state
+storage-state.bin
+storage-state.bin.lock
+
+# Local secrets and configuration
+.env
+.env.*
+!.env.example
+
+# Locally downloaded MySQL Connector/J (obtain from the official vendor)
+lib/*.jar
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
