@@ -1,0 +1,8 @@
+target/
+out/
+build/
+*.class
+.env
+.env.*
+!.env.example
+*.log
