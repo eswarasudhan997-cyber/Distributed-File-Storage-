@@ -129,4 +129,134 @@ public final class BTree<K extends Comparable<K>, V> {
             for(int i=0;i<n.children.size();i++)validate(n.children.get(i),i==0?min:n.keys.get(i-1),i==n.keys.size()?max:n.keys.get(i),depth+1,leafDepth,total);
         }
     }
+    public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    BTree<Integer, String> tree = new BTree<>(2);
+
+    while (true) {
+        System.out.println("\n===== B-TREE MENU =====");
+        System.out.println("1. Insert");
+        System.out.println("2. Search");
+        System.out.println("3. Update");
+        System.out.println("4. Delete");
+        System.out.println("5. Display all entries");
+        System.out.println("6. Range query");
+        System.out.println("7. First entry");
+        System.out.println("8. Last entry");
+        System.out.println("9. Validate B-Tree");
+        System.out.println("10. Display size");
+        System.out.println("0. Exit");
+        System.out.print("Enter your choice: ");
+
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        try {
+            switch (choice) {
+                case 1: {
+                    System.out.print("Enter key: ");
+                    int key = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Enter value: ");
+                    String value = sc.nextLine();
+
+                    tree.put(key, value);
+                    System.out.println("Inserted successfully.");
+                    break;
+                }
+
+                case 2: {
+                    System.out.print("Enter key to search: ");
+                    int key = sc.nextInt();
+
+                    String value = tree.get(key);
+                    System.out.println(value == null
+                            ? "Key not found."
+                            : "Value: " + value);
+                    break;
+                }
+
+                case 3: {
+                    System.out.print("Enter key to update: ");
+                    int key = sc.nextInt();
+                    sc.nextLine();
+
+                    if (tree.get(key) == null) {
+                        System.out.println("Key not found.");
+                    } else {
+                        System.out.print("Enter new value: ");
+                        String value = sc.nextLine();
+                        tree.put(key, value);
+                        System.out.println("Updated successfully.");
+                    }
+                    break;
+                }
+
+                case 4: {
+                    System.out.print("Enter key to delete: ");
+                    int key = sc.nextInt();
+
+                    String removed = tree.remove(key);
+                    System.out.println(removed == null
+                            ? "Key not found."
+                            : "Deleted value: " + removed);
+                    break;
+                }
+
+                case 5: {
+                    System.out.println("Entries: " + tree.entries());
+                    break;
+                }
+
+                case 6: {
+                    System.out.print("Enter lower key: ");
+                    int low = sc.nextInt();
+
+                    System.out.print("Enter upper key: ");
+                    int high = sc.nextInt();
+
+                    System.out.println(
+                            "Range result: " + tree.range(low, high));
+                    break;
+                }
+
+                case 7: {
+                    System.out.println("First entry: " + tree.firstEntry());
+                    break;
+                }
+
+                case 8: {
+                    System.out.println("Last entry: " + tree.lastEntry());
+                    break;
+                }
+
+                case 9: {
+                    tree.validate();
+                    System.out.println("B-Tree is valid.");
+                    break;
+                }
+
+                case 10: {
+                    System.out.println("Tree size: " + tree.size());
+                    break;
+                }
+
+                case 0: {
+                    System.out.println("Exiting B-Tree program.");
+                    sc.close();
+                    return;
+                }
+
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Enter an integer where required.");
+            sc.nextLine();
+        } catch (AssertionError e) {
+            System.out.println("B-Tree validation failed: " + e.getMessage());
+        }
+    }
+}
 }
